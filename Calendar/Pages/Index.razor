@@ -1,0 +1,73 @@
+﻿@page "/"
+
+@{
+    var persianCalendar = new System.Globalization.PersianCalendar();
+    var today = DateTime.Now;
+    var year = persianCalendar.GetYear(today);
+    var month = persianCalendar.GetMonth(today);
+    var dayOfMonth = persianCalendar.GetDayOfMonth(today);
+    var daysInMonth = persianCalendar.GetDaysInMonth(year, month);
+    DateTime firstDayOfMonth = new DateTime(year, month, 1, persianCalendar);
+    DayOfWeek dayOfWeek = firstDayOfMonth.DayOfWeek;
+}
+
+<style>
+    #calendar {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #f1f1c1;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        #calendar th, #calendar td {
+            border: 1px solid #999;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #calendar th {
+            background-color: #e2e2e2;
+        }
+
+        #calendar td:hover {
+            background-color: #d1d1d1;
+        }
+
+    .today {
+        background-color: #ffcc00;
+    }
+</style>
+
+<table id="calendar">
+    <tr>
+        <th>جمعه</th>
+        <th>دوشنبه</th>
+        <th>سه‌شنبه</th>
+        <th>چهارشنبه</th>
+        <th>پنج‌شنبه</th>
+        <th>یک‌شنبه</th>
+        <th>شنبه</th>
+    </tr>
+    @{
+        int day = 1;
+        for (int i = 0; i < 6; i++)
+        {
+            <tr>
+                @for (int j = 0; j < 7; j++)
+                {
+                    if (i == 0 && j < (int)dayOfWeek || day > daysInMonth)
+                    {
+                        <td></td>
+                    }
+                    else
+                    {
+                        <td class="@(day == dayOfMonth ? "today" : "")">@day</td>
+                        day++;
+                    }
+                }
+            </tr>
+        }
+    }
+</table>
+
